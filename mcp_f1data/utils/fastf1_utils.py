@@ -26,8 +26,8 @@ def get_latest_session():
 
     return path_parts
 
-def get_session(type_event:str=None, year:int=None, event:int=None, session:str=None, latest_sesion:bool=False):
-    if latest_sesion:
+def get_session(type_event:str=None, year:int=None, event:int=None, session:str=None, latest_session:bool=False):
+    if latest_session:
         type_event, year, event, session = get_latest_session()
     if type_event == "official":
         session = fastf1.get_session(year, event, session)

@@ -2,7 +2,7 @@ import json, requests
 from pydantic import Field
 from fastmcp import FastMCP
 import fastf1.plotting as f1_plotting
-from ..utils.fastf1_utils import get_laps, get_specific_lap, get_session
+from ..utils.fastf1_utils import get_laps, get_specific_lap, get_session as get_session_custom
 
 def register_fastf1_tools(mcp:FastMCP):
     """Register all F1 analysis tools with the MCP server"""
@@ -67,9 +67,9 @@ def register_fastf1_tools(mcp:FastMCP):
     ) -> json:
         """Get the final classification for a specific session"""
 
-        session = get_session(type_event=type_session, year=year, event=round, session=session, latest_session=latest_session)
-        print(session.results)
-        return session.results.to_json()
+        session = get_session_custom(type_event=type_session, year=year, event=round, session=session, latest_session=latest_session)
+        session_results = session.results[["Position","FullName","Abbreviation"]].to_json(orient='records', lines=True)
+        return session_results
 
     @mcp.tool(name="get_fastest_lap")
     async def get_fastest_lap(
